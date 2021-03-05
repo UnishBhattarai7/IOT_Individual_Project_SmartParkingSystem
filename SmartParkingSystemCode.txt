@@ -1,0 +1,42 @@
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+const int flamePin = 16;
+int Flame = HIGH;
+#define BUZZER 15
+
+char auth[] = "3usa--XmfyVgqqzHmGx1bwUrsqHpL_r8"; //Auth code sent via Email
+char ssid[] = "Hidden Virus_wlink"; //Wifi name
+char pass[] = "#kathmandu7"; 
+void setup() {
+  pinMode(flamePin, INPUT);
+  Blynk.begin(auth, ssid, pass);
+  Serial.begin(9600);
+  // put your setup code here, to run once:
+   pinMode(BUZZER , OUTPUT);
+  noTone(BUZZER);
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  Flame = digitalRead(flamePin);
+  Blynk.run();
+    if (Flame == LOW)
+  {
+    activateAlarm();
+  }
+}
+void activateAlarm(){
+  Serial.println("Fire!!!");
+   Blynk.notify("Fire!!! Fire!!! at Unish 's House. Take Action Soon");
+  delay(1000);
+  tone(BUZZER,500);
+  delay(3000);
+  noTone(BUZZER);
+  delay(1000);
+  tone(BUZZER,500);
+  delay(3000);
+  noTone(BUZZER);
+ 
+}
